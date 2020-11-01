@@ -171,7 +171,13 @@
 /* Just print stuff to the appropriate stream. */
 
 #ifdef MESSAGES_TO_STDOUT
-  #define SAYF(x...) printf(x)
+  #ifdef USE_COLOR
+extern u8 decolorize_console_output;
+int       color_controlled_printf(const char *fmt, ...);
+    #define SAYF(x...) color_controlled_printf(x)
+  #else
+    #define SAYF(x...) printf(x)
+  #endif
 #else
   #define SAYF(x...) fprintf(stderr, x)
 #endif                                               /* ^MESSAGES_TO_STDOUT */

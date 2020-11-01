@@ -910,3 +910,39 @@ s32 create_file(u8 *fn) {
 
 }
 
+#ifdef USE_COLOR
+
+  #include <inttypes.h>
+
+  #define AFL_DECOLORIZE_CONSOLE_OUTPUT "AFL_DECOLORIZE_CONSOLE_OUTPUT"
+
+static strip_color_codes(char *s) {
+
+  // ... remove all occurrences of cXXX and bgXXX from s (in-place)
+
+}
+
+int color_controlled_printf(const char *fmt, ...) {
+
+  va_list args;
+
+  static u8 initialized_from_env = 0;
+  static u8 decolorize_console_output = 0;
+  if (!initialized_from_env) {
+
+    initialized_from_env = 1;
+    decolorize_console_output =
+        getenv(AFL_DECOLORIZE_CONSOLE_OUTPUT)
+            ? ((u8)strtoumax(getenv(AFL_DECOLORIZE_CONSOLE_OUTPUT), NULL, 2))
+            : 0;
+
+  }
+
+  va_start(args, fmt);
+  if (decolorize_console_output) strip_color_codes(fmt);
+  return vprintf(fmt, args);
+
+};
+
+#endif
+
