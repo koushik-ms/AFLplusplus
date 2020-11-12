@@ -913,16 +913,18 @@ s32 create_file(u8 *fn) {
 #ifdef USE_COLOR
 
   #include <inttypes.h>
+  #include <stdarg.h>
 
   #define AFL_DECOLORIZE_CONSOLE_OUTPUT "AFL_DECOLORIZE_CONSOLE_OUTPUT"
 
-static strip_color_codes(char *s) {
+void strip_color_codes(char *s) {
 
   // ... remove all occurrences of cXXX and bgXXX from s (in-place)
+  (void)s;
 
 }
 
-int color_controlled_printf(const char *fmt, ...) {
+int color_controlled_printf(char *fmt, ...) {
 
   va_list args;
 
@@ -942,7 +944,7 @@ int color_controlled_printf(const char *fmt, ...) {
   if (decolorize_console_output) strip_color_codes(fmt);
   return vprintf(fmt, args);
 
-};
+}
 
 #endif
 

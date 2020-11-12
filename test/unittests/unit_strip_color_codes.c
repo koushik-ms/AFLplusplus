@@ -4,12 +4,15 @@ Test-cases for strip_color_codes function
 
 */
 
+#include <stdio.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <setjmp.h>
 #include <cmocka.h>
 
+#define USE_COLOR
 #include "debug.h"
+
 #define PAYLOAD "dummy"
 
 static void empty_string(void **state) {
@@ -21,11 +24,13 @@ static void empty_string(void **state) {
 }
 
 static void remove_cXXX_code(void **state) {
-    (void) state; /* unused */
-    char *sut = cBLK PAYLOAD;
+    char *inp = cRED PAYLOAD cRST;
     char *exp = PAYLOAD;
-    strip_color_codes(sut);
-    assert_string_equal(sut, exp);
+    (void) state; /* unused */
+    printf("exp: [%s]\n", exp);
+    printf("inp: [%s]\n", inp);
+    strip_color_codes(inp);
+    assert_string_equal(inp, exp);
 }
 
   /*
