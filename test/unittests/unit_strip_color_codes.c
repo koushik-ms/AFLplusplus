@@ -15,6 +15,8 @@ Test-cases for strip_color_codes function
 
 #define PAYLOAD "dummy"
 
+/* TODO: Add test with NULL ptr */
+
 static void empty_string(void **state) {
     (void) state; /* unused */
     char *sut = "";
@@ -23,13 +25,23 @@ static void empty_string(void **state) {
     assert_string_equal(sut, exp);
 }
 
-static void remove_cXXX_code(void **state) {
-    char *inp = cRED PAYLOAD cRST;
+static void remove_leading_escape(void **state) {
+    char inp[10] = "\x1b" PAYLOAD ;
     char *exp = PAYLOAD;
     (void) state; /* unused */
     printf("exp: [%s]\n", exp);
     printf("inp: [%s]\n", inp);
     strip_color_codes(inp);
+    assert_string_equal(inp, exp);
+}
+
+static void remove_leading_escape_from_literal(void **state) {
+    char inp[10] = "\x1b" PAYLOAD ;
+    char *exp = PAYLOAD;
+    (void) state; /* unused */
+    printf("exp: [%s]\n", exp);
+    printf("inp: [%s]\n", inp);
+    strip_color_codes( "\x1b" PAYLOAD );
     assert_string_equal(inp, exp);
 }
 
@@ -43,7 +55,8 @@ static void remove_cXXX_code(void **state) {
 int main(void) {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(empty_string),
-        cmocka_unit_test(remove_cXXX_code),
+        cmocka_unit_test(remove_leading_escape),
+        cmocka_unit_test(remove_leading_escape_from_literal),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
