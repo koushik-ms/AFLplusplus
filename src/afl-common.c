@@ -917,7 +917,7 @@ s32 create_file(u8 *fn) {
 
   #define AFL_DECOLORIZE_CONSOLE_OUTPUT "AFL_DECOLORIZE_CONSOLE_OUTPUT"
 
-void strip_color_codes(char *s) {
+void strip_color_codes(char s[]) {
     if(!*s) return;
     char *r = s+1;
     do { *s++ = *r++;} while(*s);

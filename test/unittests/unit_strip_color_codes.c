@@ -26,7 +26,7 @@ static void empty_string(void **state) {
 }
 
 static void remove_leading_escape(void **state) {
-    char inp[10] = "\x1b" PAYLOAD ;
+    char inp[] = "\x1b" PAYLOAD ;
     char *exp = PAYLOAD;
     (void) state; /* unused */
     printf("exp: [%s]\n", exp);
@@ -36,13 +36,11 @@ static void remove_leading_escape(void **state) {
 }
 
 static void remove_leading_escape_from_literal(void **state) {
-    char inp[10] = "\x1b" PAYLOAD ;
     char *exp = PAYLOAD;
     (void) state; /* unused */
     printf("exp: [%s]\n", exp);
-    printf("inp: [%s]\n", inp);
+    printf("inp: [%s]\n", "\x1b" PAYLOAD);
     strip_color_codes( "\x1b" PAYLOAD );
-    assert_string_equal(inp, exp);
 }
 
   /*

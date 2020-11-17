@@ -173,7 +173,7 @@
 #ifdef MESSAGES_TO_STDOUT
   #ifdef USE_COLOR
 extern u8 decolorize_console_output;
-void      strip_color_codes(char *s);
+void      strip_color_codes(char s[]);
 int       color_controlled_printf(char *fmt, ...);
     #define SAYF(x...) color_controlled_printf(x)
   #else
